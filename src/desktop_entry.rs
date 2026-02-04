@@ -20,11 +20,8 @@ impl DesktopEntry {
     pub fn command(&self) -> Option<String> {
         if let Some(exec) = self.exec.clone() {
             let regex = regex::Regex::new("^(?<command>.+?)(?: %[fFuUick])*$").unwrap();
-            let captures = regex.captures(&*exec).unwrap();
-            match captures.name("command") {
-                Some(command) => Some(command.as_str().trim_matches('"').to_string()),
-                None => None,
-            }
+            let captures = regex.captures(&exec).unwrap();
+            captures.name("command").map(|command| command.as_str().trim_matches('"').to_string())
         } else {
             None
         }

@@ -44,7 +44,7 @@ async fn main() {
         )
         .unwrap()
     {
-        show_comment(&mut *siv, desktop_entry.as_ref())
+        show_comment(&mut siv, desktop_entry.as_ref())
     }
 
     siv.run();
@@ -66,13 +66,11 @@ async fn main_view() -> impl View {
 async fn select_view() -> impl View {
     /// Format the desktop entry for use in the select list
     pub fn format(desktop_entry: &DesktopEntry) -> String {
-        format!(
-            "{}",
-            desktop_entry
-                .name
-                .clone()
-                .unwrap_or_else(|| "<No name>".to_string())
-        )
+        desktop_entry
+            .name
+            .clone()
+            .unwrap_or_else(|| "<No name>".to_string())
+            .to_string()
     }
     // Create the (named) SelectView
     let mut select_view = SelectView::new()
@@ -160,15 +158,14 @@ async fn desktop_files(path: impl AsRef<Path>) -> std::io::Result<Vec<PathBuf>> 
     let mut path_bufs: Vec<PathBuf> = vec![];
     let mut entries = fs::read_dir(&path).await?;
     while let Some(dir_entry) = entries.next_entry().await? {
-        if dir_entry.path().is_file() {
-            if let Some(extension) = dir_entry.path().extension() {
-                if extension == "desktop" {
-                    path_bufs.push(dir_entry.path());
-                }
-            }
+        if dir_entry.path().is_file()
+            && let Some(extension) = dir_entry.path().extension()
+            && extension == "desktop"
+        {
+            path_bufs.push(dir_entry.path());
         }
     }
-    Ok(path_bufs.iter().map(|path| path.clone()).collect())
+    Ok(path_bufs.to_vec())
 }
 
 /// When a desktop entry is "submitted", we spawn the executable and quit the program
