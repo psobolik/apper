@@ -1,13 +1,16 @@
 [package]
 name = "apper"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2024"
+authors = ["Paul Sobolik <psobolik@zoho.com>"]
+description = "Launch GUI apps from the command line"
+license = "MIT"
 
 [dependencies]
-configparser = "3.1.0"
 cursive = { version = "0.21.1" }
+fork = "0.7.0"
 regex = "1.11.3"
-tokio = { version = "1.47.1", features = ["full"] }
+tokio = { version = "1.47.1", features = ["fs", "macros", "rt-multi-thread", "process"] }
 
 [profile.release]
 opt-level = 'z'     # Optimize for size

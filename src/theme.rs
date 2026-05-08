@@ -24,7 +24,7 @@ pub fn theme() -> Theme {
                 BaseColor::White.dark(),
                 BaseColor::Blue.dark(),
             ))
-                .combine(Effect::Bold);
+            .combine(Effect::Bold);
             palette[PaletteStyle::TitlePrimary] =
                 Style::from(BaseColor::Yellow.light()).combine(Effect::Bold);
             palette[PaletteStyle::HighlightInactive] = Style::from(ColorStyle::new(
